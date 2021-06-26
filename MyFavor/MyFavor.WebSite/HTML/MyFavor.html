@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="../JS/MyFavor.js"></script>
+
+</head>
+<body>
+    <div id="app" style="width:100%;height:600px;text-align:center">
+
+
+        <table style="max-width:1200px;width:100%;height:100%;margin:auto">
+            <tr>
+                <td width="40%">
+                    <select name="list" v-model="leftSelectValue" multiple size="25" style="width:80%" v-if="refresh" @change="changeSelect">
+                        <option :key="leftitem.id" :value="leftitem.id" v-for="leftitem in leftTable" @dblclick="optionToRightDoubleClick(leftitem.id)">{{leftitem.name}}</option>
+                    </select>
+                </td>
+                <td width="20%">
+                    <button @click='buttonToRightClickAtion' style="width:100px">>></button>
+                    <br />
+                    <br />
+                    <button @click='buttonToLeftClickAtion' style="width:100px"><<</button>
+                    <br />
+                    <br />
+                    <button @click='buttonCreateMailClickAtion' style="width:100px">生成邮件</button>
+                </td>
+                <td width="40%">
+                    <select name="list" v-model="rightSelectValue" multiple size="25" style="width:80%" v-if="refresh">
+                        <option :key="rightitem.id" :value=rightitem.id v-for="rightitem in rightTable" @dblclick="optionToLeftDoubleClick(rightitem.id)">{{rightitem.name}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <textarea v-model="myFavorDescription" style="width:90%"  rows="20">{{myFavorDescription}}</textarea>
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            var BaseUrl = "https://localhost:44328/api/MyFavor/"
+            var vm = new Vue({
+                el: "#app",
+                data() {
+                    return {
+                        leftTable: [],
+                        leftSelectValue: [],
+                        rightTable: [],
+                        rightSelectValue: [],
+                        myFavorDescription: "",
+                        refresh: true,
+                    }
+                },
+                created() {
+
+                    this.getMyFavor()
+
+                },
+                methods: {
+                    changeSelect: function () {
+                        //    this.$forceUpdate();
+                    },
+                    getMyFavor() {
+                        var v = this;
+
+                        axios
+                            .get(BaseUrl + 'GetMyFavors')
+                            .then(function (response) {
+                                refresh = false;
+
+                                myFavorData = response.data
+                                v.leftTable = myFavorData.leftTable;
+                                v.rightTable = myFavorData.rightTable;
+
+
+                            })
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+
+
+                    },
+                    optionToRightDoubleClick: function (id) {
+                        this.AddFavor([id]);
+                    },
+                    optionToLeftDoubleClick: function (id) {
+                        this.RemoveFavor([id]);
+                    },
+                    buttonToRightClickAtion: function () {
+
+                        this.AddFavor(this.leftSelectValue)
+
+                    },
+                    buttonToLeftClickAtion: function () {
+                        this.RemoveFavor(this.rightSelectValue)
+
+                    },
+                    buttonCreateMailClickAtion: function () {
+                        var v = this;
+
+                        axios
+                            .get(BaseUrl + 'GetMyFavorDescription')
+                            .then(function (response) {
+                                v.myFavorDescription = response.data
+                            })
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+
+                    },
+                    AddFavor: function (ids) {
+                        var v = this;
+                        axios
+                            .post(BaseUrl + 'AddMyFavor', ids)
+                            .then(function (response) {
+                                v.getMyFavor();
+                            })
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                    },
+                    RemoveFavor: function (ids) {
+                        var v = this;
+                        axios
+                            .post(BaseUrl + 'RemoveMyFavors', ids)
+                            .then(function (response) {
+                                v.getMyFavor();
+                            })
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                    },
+                }
+
+            })
+        </script>
+    </div>
+</body>
+
+</html>

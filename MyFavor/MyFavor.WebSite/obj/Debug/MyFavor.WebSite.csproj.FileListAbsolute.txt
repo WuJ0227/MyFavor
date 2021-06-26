@@ -1,0 +1,7 @@
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\bin\MyFavor.WebSite.dll.config
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\bin\MyFavor.WebSite.dll
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\bin\MyFavor.WebSite.pdb
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\obj\Debug\MyFavor.WebSite.csprojAssemblyReference.cache
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\obj\Debug\MyFavor.WebSite.csproj.CoreCompileInputs.cache
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\obj\Debug\MyFavor.WebSite.dll
+D:\Project\MyFavor\MyFavor\MyFavor.WebSite\obj\Debug\MyFavor.WebSite.pdb
